@@ -1,0 +1,13 @@
+{
+  "generator-wupjs": {
+    "module": "polypipe",
+    "description": "A helper class to encapsulate stream pipes",
+    "author": "Jason Lenoble",
+    "email": "jason.lenoble@gmail.com",
+    "github": "jlenoble",
+    "license": "MIT",
+    "transpile": "es2015",
+    "addons": [],
+    "Class": "Polypipe"
+  }
+}
