@@ -27,6 +27,9 @@ describe('Testing PolyPipe', function() {
     describe(`Initializing PolyPipe with (${initArgs.description})`,
       function() {
 
+        const pipe = new PolyPipe(...initArgs.values);
+        var [fn, ...args] = initArgs.values;
+
         ['gulpfile.babel.js', 'test/**/*.js', [
           'gulpfile.babel.js',
           'test/**/*.js',
@@ -34,13 +37,16 @@ describe('Testing PolyPipe', function() {
           '!gulp/globs.js'
         ]].forEach(glb => {
 
-          it(`Using with glob '${glb}'`, function() {
-            const pipe = new PolyPipe(...initArgs.values);
-
+          it(`Using with glob '${glb}' (method through)`, function() {
             var stream = pipe.through(gulp.src(glb));
             expect(isStream(stream)).to.be.true;
 
-            var [fn, ...args] = initArgs.values;
+            return equalStreamContents(stream,
+              gulp.src(glb).pipe(fn(...args)));
+          });
+
+          it(`Using with glob '${glb} (method plugin)'`, function() {
+            var stream = gulp.src(glb).pipe(pipe.plugin());
 
             return equalStreamContents(stream,
               gulp.src(glb).pipe(fn(...args)));
@@ -78,6 +84,8 @@ describe('Testing PolyPipe', function() {
     describe(`Initializing PolyPipe with (${initArgs.description})`,
       function() {
 
+        const pipe = new PolyPipe(initArgs.values);
+
         ['gulpfile.babel.js', 'test/**/*.js', [
           'gulpfile.babel.js',
           'test/**/*.js',
@@ -85,9 +93,7 @@ describe('Testing PolyPipe', function() {
           '!gulp/globs.js'
         ]].forEach(glb => {
 
-          it(`Using with glob '${glb}'`, function() {
-            const pipe = new PolyPipe(initArgs.values);
-
+          it(`Using with glob '${glb}' (method through)`, function() {
             var stream = pipe.through(gulp.src(glb));
             expect(isStream(stream)).to.be.true;
 
@@ -100,7 +106,22 @@ describe('Testing PolyPipe', function() {
               stream2 = stream2.pipe(fn(...args));
             });
 
-            return equalStreamContents(stream,stream2);
+            return equalStreamContents(stream, stream2);
+          });
+
+          it(`Using with glob '${glb} (method plugin)'`, function() {
+            var stream = gulp.src(glb).pipe(pipe.plugin());
+
+            var stream2 = gulp.src(glb);
+            initArgs.values.forEach(values => {
+              if (!Array.isArray(values)) {
+                values = [values];
+              }
+              const [fn, ...args] = values;
+              stream2 = stream2.pipe(fn(...args));
+            });
+
+            return equalStreamContents(stream, stream2);
           });
 
         });

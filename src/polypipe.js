@@ -1,18 +1,24 @@
+import combine from 'stream-combiner';
+
 export default class PolyPipe {
   constructor(pipes, ...args) {
     var _pipes = Array.isArray(pipes) ? pipes : [[pipes, ...args]];
-
-    Object.defineProperties(this, {
-      pipes: {
-        get() {return _pipes;}
-      }
-    });
 
     _pipes = _pipes.map(pipe => {
       if (!Array.isArray(pipe)) {pipe = [pipe];}
       const [fn, ...args] = pipe;
       return fn.bind(undefined, ...args);
     });
+
+    Object.defineProperties(this, {
+      pipes: {
+        get() {return _pipes;}
+      }
+    });
+  }
+
+  plugin() {
+    return combine(this.pipes.map(pipe => pipe()));
   }
 
   through(stream) {
