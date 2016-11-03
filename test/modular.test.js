@@ -48,4 +48,23 @@ describe('Testing PolyPipe modularity', function() {
     ]);
   });
 
+  it(`Chaining pipes`, function() {
+    return Promise.all([
+      equalStreamContents(
+        this.src().pipe(this.pipe3.plugin()),
+        (new PolyPipe(noop))
+          .prepipe(babel)
+          .pipe(rename, {suffix: '-renamed'})
+          .through(this.src())
+      ),
+      equalStreamContents(
+        this.src().pipe(this.pipe3.plugin()),
+        (new PolyPipe(noop))
+          .pipe(rename, {suffix: '-renamed'})
+          .prepipe(babel)
+          .through(this.src())
+      )
+    ]);
+  });
+
 });
