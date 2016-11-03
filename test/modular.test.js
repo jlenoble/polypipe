@@ -4,10 +4,11 @@ import babel from 'gulp-babel';
 import rename from 'gulp-rename';
 import {expect} from 'chai';
 import PolyPipe from '../src/polypipe';
-import {isStream} from './helpers';
 import equalStreamContents from 'equal-stream-contents';
 
 describe('Testing PolyPipe modularity', function() {
+
+  this.timeout(4000);
 
   before(function() {
     this.src = function src() {return gulp.src('gulp/*.js');};

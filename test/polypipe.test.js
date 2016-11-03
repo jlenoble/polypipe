@@ -10,6 +10,8 @@ describe('Testing PolyPipe', function() {
     describe(`Initializing PolyPipe with (${args.description})`,
       function() {
 
+        this.timeout(4000);
+
         const pipe = args.instantiate();
         testGlobs.forEach(glb => {
 

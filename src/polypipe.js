@@ -4,9 +4,16 @@ function initPipes(pipes, ...args) {
   if (pipes instanceof PolyPipe) {
     return initPipes(pipes.initPipes);
   }
-
-  var _initPipes = Array.isArray(pipes) ? pipes : [[pipes, ...args]];
-  return _initPipes.map(pipe => Array.isArray(pipe) ? pipe : [pipe]);
+  const _initPipes = Array.isArray(pipes) ? pipes : [[pipes, ...args]];
+  let array = [];
+  _initPipes.forEach(pipe => {
+    if (pipe instanceof PolyPipe) {
+      array = array.concat(pipe.initPipes);
+    } else {
+      array.push(Array.isArray(pipe) ? pipe : [pipe]);
+    }
+  });
+  return array;
 }
 
 export default class PolyPipe {
