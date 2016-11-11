@@ -1,3 +1,4 @@
+import {SingletonFactory} from 'singletons';
 import combine from 'stream-combiner';
 
 function initPipes(pipes, ...args) {
@@ -16,7 +17,7 @@ function initPipes(pipes, ...args) {
   return array;
 }
 
-export default class PolyPipe {
+class PolyPipe {
   constructor(pipes, ...args) {
     var _initPipes = initPipes(pipes, ...args);
 
@@ -36,11 +37,13 @@ export default class PolyPipe {
   }
 
   pipe(pipes, ...args) {
-    return new PolyPipe(this.initPipes.concat(initPipes(pipes, ...args)));
+    return new SingletonPolyPipe(
+      this.initPipes.concat(initPipes(pipes, ...args)));
   }
 
   prepipe(pipes, ...args) {
-    return new PolyPipe(initPipes(pipes, ...args).concat(this.initPipes));
+    return new SingletonPolyPipe(
+      initPipes(pipes, ...args).concat(this.initPipes));
   }
 
   plugin() {
@@ -54,3 +57,7 @@ export default class PolyPipe {
   }
 
 };
+
+const SingletonPolyPipe = SingletonFactory(PolyPipe, ['object', 'literal']);
+
+export default SingletonPolyPipe;
