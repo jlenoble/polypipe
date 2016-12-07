@@ -4,12 +4,12 @@ import babel from 'gulp-babel';
 import rename from 'gulp-rename';
 import MonoPipe from '../src/monopipe';
 
-function refStream1(glb) {
+function refStream(glb) {
   const [fn, ...args] = this.values;
   return gulp.src(glb).pipe(fn(...args));
 }
 
-function instantiate1() {
+function instantiate() {
   return new MonoPipe(...this.values);
 }
 
@@ -30,7 +30,7 @@ export const argsAsPlugins = [
 
 argsAsPlugins.forEach(args => {
   Object.assign(args, {
-    refStream: refStream1,
-    instantiate: instantiate1
+    refStream: refStream,
+    instantiate: instantiate
   });
 });
