@@ -1,4 +1,4 @@
-export class MonoPipe {
+export default class MonoPipe {
 
   constructor(plugin, ...args) {
     const _plugin = plugin.bind(undefined, ...args);
