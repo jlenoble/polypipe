@@ -9,9 +9,9 @@ describe('PolyPipe is singleton class', function() {
 
   it(`Instance returned by ctor is a singleton`, function() {
 
-    const g1 = new PolyPipe(rename, {suffix: '-renamed'});
+    const g1 = new PolyPipe([rename, {suffix: '-renamed'}]);
     const g2 = new PolyPipe(babel);
-    const g3 = new PolyPipe(rename, {suffix: '-renamed'});
+    const g3 = new PolyPipe([rename, {suffix: '-renamed'}]);
 
     return Promise.all([
       expect(g1).not.to.equal(g2),
