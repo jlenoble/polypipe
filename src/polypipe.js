@@ -6,7 +6,7 @@ const PolyPipe = PolytonFactory(MonoPipe, ['object', 'literal'], undefined,
   {
     extend: {
       plugin() {
-        return combine(this.elements.map(pipe => pipe.plugin()));
+        return combine(this.map(pipe => pipe.plugin()));
       },
 
       through(stream) {
