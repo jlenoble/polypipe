@@ -17,7 +17,7 @@ function refStream(glb) {
 }
 
 function instantiate() {
-  return new PolyPipe(this.values);
+  return new PolyPipe(...this.values);
 }
 
 
