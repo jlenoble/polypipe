@@ -46,7 +46,7 @@
     "stat-again": "^0.2.0"
   },
   "dependencies": {
-    "singletons": "^0.2.0",
+    "polyton": "^0.1.0",
     "stream-combiner": "^0.2.2"
   }
 }
