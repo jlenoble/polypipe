@@ -1,12 +1,12 @@
 import gulp from 'gulp';
 import {expect} from 'chai';
 import {isStream, testGlobs} from './common-helpers';
-import {argsAsListsOfPlugins} from './polypipe-helpers';
+import {allArgs} from './polypipe-helpers';
 import equalStreamContents from 'equal-stream-contents';
 
 describe('Testing class PolyPipe', function() {
 
-  argsAsListsOfPlugins.forEach(args => {
+  allArgs.forEach(args => {
 
     describe(`Initializing PolyPipe with (${args.description})`,
       function() {
