@@ -13,6 +13,14 @@ const PolyPipe = PolytonFactory(MonoPipe, ['object', 'literal'], undefined,
         return [stream, ...this.elements].reduce((stream, pipe) => {
           return stream.pipe(pipe.plugin());
         });
+      },
+
+      pipe(...args) {
+        return this.concat(...args);
+      },
+
+      prepipe(...args) {
+        return (new PolyPipe(...args)).concat(this);
       }
     }
   });

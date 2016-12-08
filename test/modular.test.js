@@ -13,8 +13,8 @@ describe('Testing PolyPipe modularity', function() {
   before(function() {
     this.src = function src() {return gulp.src('gulp/*.js');};
     this.pipe1 = new PolyPipe(babel);
-    this.pipe2 = new PolyPipe([noop, [rename, {suffix: '-renamed'}]]);
-    this.pipe3 = new PolyPipe([babel, noop, [rename, {suffix: '-renamed'}]]);
+    this.pipe2 = new PolyPipe(noop, [rename, {suffix: '-renamed'}]);
+    this.pipe3 = new PolyPipe(babel, noop, [rename, {suffix: '-renamed'}]);
 
     return equalStreamContents(
       this.src().pipe(this.pipe1.plugin()).pipe(this.pipe2.plugin()),
@@ -26,7 +26,7 @@ describe('Testing PolyPipe modularity', function() {
     return Promise.all([
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
-        this.src().pipe(this.pipe1.pipe(this.pipe2.initPipes).plugin())
+        this.src().pipe(this.pipe1.pipe(...this.pipe2.initArgs).plugin())
       ),
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
@@ -39,7 +39,7 @@ describe('Testing PolyPipe modularity', function() {
     return Promise.all([
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
-        this.src().pipe(this.pipe2.prepipe(this.pipe1.initPipes).plugin())
+        this.src().pipe(this.pipe2.prepipe(...this.pipe1.initArgs).plugin())
       ),
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
@@ -54,13 +54,13 @@ describe('Testing PolyPipe modularity', function() {
         this.src().pipe(this.pipe3.plugin()),
         (new PolyPipe(noop))
           .prepipe(babel)
-          .pipe(rename, {suffix: '-renamed'})
+          .pipe([rename, {suffix: '-renamed'}])
           .through(this.src())
       ),
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
         (new PolyPipe(noop))
-          .pipe(rename, {suffix: '-renamed'})
+          .pipe([rename, {suffix: '-renamed'}])
           .prepipe(babel)
           .through(this.src())
       )
