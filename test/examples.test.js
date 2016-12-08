@@ -31,14 +31,14 @@ describe('Testing README.md examples', function() {
   });
 
   it('Basic usage example', tmpDir(dest, function() {
-    const pipe = new PolyPipe([
+    const pipe = new PolyPipe(
       [cached, this.cacheName],
       [newer, dest],
       sourcemaps.init,
       babel,
       [sourcemaps.write, './'],
       [gulp.dest, dest]
-    ]);
+    );
 
     return new Promise((resolve, reject) => {
       pipe.through(gulp.src(this.srcGlob))
@@ -65,12 +65,12 @@ describe('Testing README.md examples', function() {
   it('Chaining example', tmpDir(dest, function() {
     const pipe = (new PolyPipe(babel))
       .prepipe(sourcemaps.init)
-      .pipe(sourcemaps.write, './')
-      .prepipe([
+      .pipe([sourcemaps.write, './'])
+      .prepipe(
         [cached, this.cacheName],
         [newer, dest]
-      ])
-      .pipe(gulp.dest, dest);
+      )
+      .pipe([gulp.dest, dest]);
 
 
     return new Promise((resolve, reject) => {
