@@ -4,6 +4,18 @@ import combine from 'stream-combiner';
 
 const PolyPipe = PolytonFactory(MonoPipe, ['object', 'literal'], undefined,
   {
+    preprocess: args => {
+      let array = [];
+      args.forEach(arg => {
+        const [arg0, ...args] = arg;
+        if (arg0.initArgs) {
+          array = array.concat(arg0.initArgs);
+        } else {
+          array.push(arg);
+        }
+      });
+      return array;
+    },
     extend: {
       plugin() {
         return combine(this.map(pipe => pipe.plugin()));
