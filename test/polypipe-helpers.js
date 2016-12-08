@@ -20,6 +20,18 @@ function refStream2(glb) {
   return gulp.src(glb).pipe(this.values[0].plugin());
 }
 
+function refStream3(glb) {
+  var stream2 = gulp.src(glb);
+  const pipes = [[], ...this.values].reduce((array, polypipe) => {
+    return array.concat(polypipe.initArgs);
+  });
+  pipes.forEach(values => {
+    const [fn, ...args] = values;
+    stream2 = stream2.pipe(fn(...args));
+  });
+  return stream2;
+}
+
 function instantiate() {
   return new PolyPipe(...this.values);
 }
@@ -73,5 +85,46 @@ argsAsPolyPipes.forEach(args => {
   });
 });
 
-export const allArgs = [argsAsListsOfPlugins, argsAsPolyPipes].reduce(
+export const argsAsListsOfPolyPipes = [
+  {
+    description: 'new PolyPipe(noop), new PolyPipe(babel)',
+    values: [new PolyPipe(noop), new PolyPipe(babel)]
+  },
+  {
+    description: `
+      new PolyPipe([noop, [rename, {suffix: '-renamed'}]]),
+      new PolyPipe([babel, [rename, {suffix: '-renamed-twice'}]])`,
+    values: [
+      new PolyPipe(noop, [rename, {suffix: '-renamed'}]),
+      new PolyPipe(babel, [rename, {suffix: '-renamed-twice'}])
+    ]
+  },
+  {
+    description: `
+      new PolyPipe([noop, [rename, {suffix: '-renamed'}]]),
+      new PolyPipe([babel, [rename, {suffix: '-renamed-twice'}]])
+    with handwritten refStream as control`,
+    values: [
+      new PolyPipe(noop, [rename, {suffix: '-renamed'}]),
+      new PolyPipe(babel, [rename, {suffix: '-renamed-twice'}])
+    ],
+    refStream: function(glb) {
+      return gulp.src(glb)
+        .pipe(noop())
+        .pipe(rename({suffix: '-renamed'}))
+        .pipe(babel())
+        .pipe(rename({suffix: '-renamed-twice'}));
+    }
+  }
+];
+
+argsAsListsOfPolyPipes.forEach(args => {
+  Object.assign(args, {
+    refStream: args.refStream || refStream3,
+    instantiate: instantiate
+  });
+});
+
+export const allArgs = [argsAsListsOfPlugins, argsAsPolyPipes,
+  argsAsListsOfPolyPipes].reduce(
     (array, next) => array.concat(next));
