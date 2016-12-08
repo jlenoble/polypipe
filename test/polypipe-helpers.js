@@ -125,6 +125,36 @@ argsAsListsOfPolyPipes.forEach(args => {
   });
 });
 
+export const argsAsMixedBags = [
+  {
+    description: `
+      noop,
+      new PolyPipe(noop, [rename, {suffix: '-renamed'}]),
+      [rename, {suffix: '-renamed2'}]
+      new PolyPipe(babel, [rename, {suffix: '-renamed3'}])
+    with handwritten refStream`,
+    values: [
+      noop,
+      new PolyPipe(noop, [rename, {suffix: '-renamed'}]),
+      [rename, {suffix: '-renamed2'}],
+      new PolyPipe(babel, [rename, {suffix: '-renamed3'}])
+    ],
+    refStream: function(glb) {
+      return gulp.src(glb)
+        .pipe(noop())
+        .pipe(noop())
+        .pipe(rename({suffix: '-renamed'}))
+        .pipe(rename({suffix: '-renamed2'}))
+        .pipe(babel())
+        .pipe(rename({suffix: '-renamed3'}));
+    }
+  }
+];
+
+argsAsMixedBags.forEach(args => {
+  Object.assign(args, {instantiate});
+});
+
 export const allArgs = [argsAsListsOfPlugins, argsAsPolyPipes,
-  argsAsListsOfPolyPipes].reduce(
+  argsAsListsOfPolyPipes, argsAsMixedBags].reduce(
     (array, next) => array.concat(next));
