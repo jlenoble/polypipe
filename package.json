@@ -2,7 +2,7 @@
   "name": "polypipe",
   "version": "0.2.1",
   "description": "A helper class to encapsulate stream pipes",
-  "main": "index.js",
+  "main": "lib/polypipe.js",
   "scripts": {
     "test": "gulp test"
   },
