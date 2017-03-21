@@ -2,7 +2,8 @@ import MonoPipe from './monopipe';
 import {PolytonFactory} from 'polyton';
 import combine from 'stream-combiner';
 
-const PolyPipe = PolytonFactory(MonoPipe, ['object', 'literal'], undefined, {
+const PolyPipe = PolytonFactory( // eslint-disable-line new-cap
+MonoPipe, ['object', 'literal'], undefined, {
   preprocess: args => {
     let array = [];
     args.forEach(arg => {
