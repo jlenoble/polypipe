@@ -5,18 +5,14 @@ import sourcemaps from 'gulp-sourcemaps';
 import babel from 'gulp-babel';
 import diff from 'gulp-diff';
 
-import {expect} from 'chai';
-import path from 'path';
-
 import PolyPipe from '../src/polypipe';
 import {tmpDir} from 'cleanup-wrapper';
 import {expectEventuallyFound} from 'stat-again';
 
-describe('Testing README.md examples', function() {
-
+describe('Testing README.md examples', function () {
   const dest = 'tmp';
 
-  beforeEach(function() {
+  beforeEach(function () {
     this.cacheName = 'jsFiles';
     this.srcGlob = 'src/**/*.js';
     if (cached.caches[this.cacheName]) {
@@ -24,13 +20,13 @@ describe('Testing README.md examples', function() {
     }
   });
 
-  afterEach(function() {
+  afterEach(function () {
     if (cached.caches[this.cacheName]) {
       delete cached.caches[this.cacheName];
     }
   });
 
-  it('Basic usage example', tmpDir(dest, function() {
+  it('Basic usage example', tmpDir(dest, function () {
     const pipe = new PolyPipe(
       [cached, this.cacheName],
       [newer, dest],
@@ -50,7 +46,7 @@ describe('Testing README.md examples', function() {
       return new Promise((resolve, reject) => {
         gulp.src(this.srcGlob)
           .pipe(cached(this.cacheName))
-          //.pipe(newer(dest)) Can't use this in test as empties stream
+          // .pipe(newer(dest)) Can't use this in test as empties stream
           .pipe(sourcemaps.init())
           .pipe(babel())
           .pipe(sourcemaps.write('./'))
@@ -62,7 +58,7 @@ describe('Testing README.md examples', function() {
     });
   }));
 
-  it('Chaining example', tmpDir(dest, function() {
+  it('Chaining example', tmpDir(dest, function () {
     const pipe = (new PolyPipe(babel))
       .prepipe(sourcemaps.init)
       .pipe([sourcemaps.write, './'])
@@ -83,7 +79,7 @@ describe('Testing README.md examples', function() {
       return new Promise((resolve, reject) => {
         gulp.src(this.srcGlob)
           .pipe(cached(this.cacheName))
-          //.pipe(newer(dest)) Can't use this in test as empties stream
+          // .pipe(newer(dest)) Can't use this in test as empties stream
           .pipe(sourcemaps.init())
           .pipe(babel())
           .pipe(sourcemaps.write('./'))
@@ -94,5 +90,4 @@ describe('Testing README.md examples', function() {
       });
     });
   }));
-
 });

@@ -2,16 +2,15 @@ import gulp from 'gulp';
 import {noop} from 'gulp-util';
 import babel from 'gulp-babel';
 import rename from 'gulp-rename';
-import {expect} from 'chai';
 import PolyPipe from '../src/polypipe';
 import equalStreamContents from 'equal-stream-contents';
 
-describe('Testing PolyPipe modularity', function() {
-
+describe('Testing PolyPipe modularity', function () {
   this.timeout(4000);
-
-  before(function() {
-    this.src = function src() {return gulp.src('gulp/*.js');};
+  before(function () {
+    this.src = function () {
+      return gulp.src('gulp/*.js');
+    };
     this.pipe1 = new PolyPipe(babel);
     this.pipe2 = new PolyPipe(noop, [rename, {suffix: '-renamed'}]);
     this.pipe3 = new PolyPipe(babel, noop, [rename, {suffix: '-renamed'}]);
@@ -22,7 +21,7 @@ describe('Testing PolyPipe modularity', function() {
     );
   });
 
-  it(`Combining pipes with method 'pipe'`, function() {
+  it(`Combining pipes with method 'pipe'`, function () {
     return Promise.all([
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
@@ -31,11 +30,11 @@ describe('Testing PolyPipe modularity', function() {
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
         this.src().pipe(this.pipe1.pipe(this.pipe2).plugin())
-      )
+      ),
     ]);
   });
 
-  it(`Combining pipes with method 'prepipe'`, function() {
+  it(`Combining pipes with method 'prepipe'`, function () {
     return Promise.all([
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
@@ -44,11 +43,11 @@ describe('Testing PolyPipe modularity', function() {
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
         this.src().pipe(this.pipe2.prepipe(this.pipe1).plugin())
-      )
+      ),
     ]);
   });
 
-  it(`Chaining pipes`, function() {
+  it(`Chaining pipes`, function () {
     return Promise.all([
       equalStreamContents(
         this.src().pipe(this.pipe3.plugin()),
@@ -63,8 +62,7 @@ describe('Testing PolyPipe modularity', function() {
           .pipe([rename, {suffix: '-renamed'}])
           .prepipe(babel)
           .through(this.src())
-      )
+      ),
     ]);
   });
-
 });
