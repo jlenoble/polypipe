@@ -38,3 +38,4 @@ MonoPipe, ['object', 'literal'], undefined, {
 });
 
 export default PolyPipe;
+export {MonoPipe};
