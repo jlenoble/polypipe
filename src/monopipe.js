@@ -1,5 +1,4 @@
 export default class MonoPipe {
-
   constructor (plugin, ...args) {
     const _plugin = plugin.bind(undefined, ...args);
 
@@ -11,5 +10,4 @@ export default class MonoPipe {
   through (stream) {
     return stream.pipe(this.plugin());
   }
-
 };

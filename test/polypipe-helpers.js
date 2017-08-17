@@ -154,4 +154,4 @@ argsAsMixedBags.forEach(args => {
 
 export const allArgs = [argsAsListsOfPlugins, argsAsPolyPipes,
   argsAsListsOfPolyPipes, argsAsMixedBags].reduce(
-    (array, next) => array.concat(next));
+  (array, next) => array.concat(next));

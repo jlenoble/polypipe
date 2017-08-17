@@ -41,21 +41,21 @@ describe('Testing README.md examples', function () {
         .on('end', resolve)
         .on('error', reject);
     }).then(() => expectEventuallyFound(dest))
-    .then(() => {
-      delete cached.caches[this.cacheName];
-      return new Promise((resolve, reject) => {
-        gulp.src(this.srcGlob)
-          .pipe(cached(this.cacheName))
-          // .pipe(newer(dest)) Can't use this in test as empties stream
-          .pipe(sourcemaps.init())
-          .pipe(babel())
-          .pipe(sourcemaps.write('./'))
-          .pipe(diff(dest))
-          .pipe(diff.reporter({fail: true}))
-          .on('finish', resolve)
-          .on('error', reject);
+      .then(() => {
+        delete cached.caches[this.cacheName];
+        return new Promise((resolve, reject) => {
+          gulp.src(this.srcGlob)
+            .pipe(cached(this.cacheName))
+            // .pipe(newer(dest)) Can't use this in test as empties stream
+            .pipe(sourcemaps.init())
+            .pipe(babel())
+            .pipe(sourcemaps.write('./'))
+            .pipe(diff(dest))
+            .pipe(diff.reporter({fail: true}))
+            .on('finish', resolve)
+            .on('error', reject);
+        });
       });
-    });
   }));
 
   it('Chaining example', tmpDir(dest, function () {
@@ -74,20 +74,20 @@ describe('Testing README.md examples', function () {
         .on('end', resolve)
         .on('error', reject);
     }).then(() => expectEventuallyFound(dest))
-    .then(() => {
-      delete cached.caches[this.cacheName];
-      return new Promise((resolve, reject) => {
-        gulp.src(this.srcGlob)
-          .pipe(cached(this.cacheName))
-          // .pipe(newer(dest)) Can't use this in test as empties stream
-          .pipe(sourcemaps.init())
-          .pipe(babel())
-          .pipe(sourcemaps.write('./'))
-          .pipe(diff(dest))
-          .pipe(diff.reporter({fail: true}))
-          .on('finish', resolve)
-          .on('error', reject);
+      .then(() => {
+        delete cached.caches[this.cacheName];
+        return new Promise((resolve, reject) => {
+          gulp.src(this.srcGlob)
+            .pipe(cached(this.cacheName))
+            // .pipe(newer(dest)) Can't use this in test as empties stream
+            .pipe(sourcemaps.init())
+            .pipe(babel())
+            .pipe(sourcemaps.write('./'))
+            .pipe(diff(dest))
+            .pipe(diff.reporter({fail: true}))
+            .on('finish', resolve)
+            .on('error', reject);
+        });
       });
-    });
   }));
 });
