@@ -1,6 +1,5 @@
 import gulp from 'gulp';
-import {expect} from 'chai';
-import {isStream, testGlobs} from './common-helpers';
+import {testGlobs} from './common-helpers';
 import {argsAsPlugins} from './monopipe-helpers';
 import equalStreamContents from 'equal-stream-contents';
 
@@ -14,7 +13,6 @@ describe('Testing class MonoPipe', function () {
         testGlobs.forEach(glb => {
           it(`Using with glob '${glb}' (method through)`, function () {
             const stream = pipe.through(gulp.src(glb));
-            expect(isStream(stream)).to.be.true;
             return equalStreamContents(stream, args.refStream(glb));
           });
 
