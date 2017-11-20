@@ -1,6 +1,6 @@
 {
   "name": "polypipe",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A helper class to encapsulate stream pipes",
   "main": "lib/polypipe.js",
   "scripts": {
